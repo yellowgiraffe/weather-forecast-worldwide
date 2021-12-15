@@ -1,0 +1,267 @@
+@import url(font.css);
+
+*{
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+*,*:before,*:after{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+nav,footer,header,aside{display: block;}
+
+html,body{
+	height: 100%;
+	width: 100%;
+	font-size: 100%;
+	line-height: 1;
+	font-size: 18px;
+  font-family: 'Manrope', Arial, Helvetica, sans-serif;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+input,button,textarea{font-family:inherit;}
+
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+
+
+.weather-app {
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  height: 100vh;
+}
+
+.container {
+  width: 80%;
+  max-width: 67rem;
+  margin: 0 auto;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 0 3rem;
+}
+
+.header__app-settings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__bg-change-btn {
+  background: none;
+  margin-right: 4.5rem;
+}
+
+.header__bg-change-btn-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: .2s;
+}
+
+.header__bg-change-btn-icon:hover {
+  transform: scale(1.1);
+}
+
+.header__select-language {
+  background: none;
+  color: #fff;
+  margin-right: 4.5rem;
+  font-size: 1.2rem;
+  font-family: 'Manrope', Arial, Helvetica, sans-serif;
+  transition: .3s;
+}
+
+.header__select-language:focus {
+  background-color: #fff;
+  color: #010101;
+}
+
+
+.header__select-language > option {
+  font-family: 'Manrope';
+  background-color: #fff;
+  color: #010101;
+  border-radius: 50%;
+}
+
+.header__select-language > option:focus {
+  color: #fff;
+  background-color: #010101;
+}
+
+.header__temperature-button {
+  background: none;
+  color: #CFCFCF;
+  font-size: 1.2rem;
+  transition: .3s;
+}
+
+.header__temperature-button:hover {
+  transform: scale(1.1);
+}
+
+.temperature-F {
+  margin-right: .6rem;
+}
+
+.active-temperature-btn {
+  color: #fff;
+}
+
+.header__search-bar {
+  width: 20rem;
+  border-bottom: 1px solid #ECECEC;
+}
+
+.header__search-input {
+  width: 18rem;
+  height: 2rem;
+  color: #fff;
+  background: none;
+}
+
+.header__search-input::placeholder {
+  color: #CFCFCF;
+}
+
+.weather {
+  padding-top: 3.7rem;
+}
+
+.weather__current {
+  max-width: 30rem;
+  margin-bottom: 4.8rem;
+}
+
+.weather__location-info {
+  display: grid;
+  grid-template-columns: .5fr 1fr .5fr;
+  grid-template-rows: 2;
+  row-gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.weather__icon {
+  width: 6rem;
+  height: 5rem;
+  margin-right: 1rem;
+  object-fit: cover;
+  grid-row: 1 / 3;
+}
+
+.weather__city {
+  font-size: 3.6rem;
+  align-self: end;
+  margin-right: .5rem;
+}
+
+.weather__country {
+  font-size: 1rem;
+  align-self: end;
+  justify-self: end;
+}
+
+.weather__current-date {
+  align-self: center;
+}
+
+.weather__current-time {
+  align-self: center;
+  justify-self: end;
+}
+
+.weather__current-weather {
+  display: flex;
+  align-items: flex-end;
+}
+
+.weather__temperature {
+  font-size: 8rem;
+  font-weight: 700;
+  margin-right: 2rem;
+}
+
+.weather-details-item {
+  font-size: .8rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .3rem;
+  min-width: 10rem;
+}
+
+.weather-details-item:first-child {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.weather__forecast-title {
+  font-size: 1.3rem;
+  margin-bottom: 2.22rem;
+}
+
+.weather__forecast-items {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.weather__forecast-icon {
+  height: 3rem;
+  margin-bottom: .5rem;
+}
+
+.weather__forecast-day {
+  font-size: 1.11rem;
+  margin-bottom: .5rem;
+}
+
+.weather__forecast-temp {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.additional-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20rem;
+}
+
+.additional-info__map {
+  width: 100%;
+  height: 20rem;
+  border: none;
+  margin: 4rem 0 1.1rem;
+}
+
+.additional-info__map-gps {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2.8rem;
+  /* border-bottom: 1px solid #ECECEC; */
+  margin-bottom: 4rem;
+}
