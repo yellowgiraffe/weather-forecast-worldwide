@@ -1,95 +1,46 @@
 // import create from '../utils/create.js';
 import { UNSPLASH_API_KEY } from "../apikeys.js";
+import { get } from "../utils/localStorage.js";
 
 export default class Background {
-  constructor(hour, month) {
-    this.hour = hour;
-    this.month = month;
+  constructor(date) {
+    this.date = date;
+  }
 
-    const weatherAppElement = document.querySelector('.weather-app');
+  getMonth() {
+    const month = this.date.getMonth() + 1;
 
-    const defaultTime = new Date();
-
-    if (hour === undefined) { hour = defaultTime.getHours();}
-    if (month === undefined) { month = defaultTime.getMonth() + 1; }
-
-    let timeOfDay;
-    let season;
-    let query;
-
-    if (hour >= 6 && hour <= 12) {
-      timeOfDay = 'morning'
-    } else if (hour > 12 && hour <= 18) {
-      timeOfDay = 'daylight'
-    } else if (hour > 18 && hour <= 23) {
-      timeOfDay = 'evening'
-    } else {
-      timeOfDay = 'night'
-    }
-
-    if (month >= 12 && month <= 2) {
-      season = 'winter'
+    if (month == 12 || month <= 2) {
+      return 'winter'
     } else if (month >= 3 && month <= 5) {
-      season = 'spring'
+      return 'spring'
     } else if (month >= 6 && month <= 8) {
-      season = 'summer'
+      return 'summer'
     } else {
-      season = 'autumn'
+      return 'autumn'
     }
-    
-    console.log(UNSPLASH_API_KEY)
-    query = `${season} ${timeOfDay} nature`;
+  }
 
-    const baseUnplash = `https://api.unsplash.com/photos/random/?query=${query}&orientation=landscape&client_id=${UNSPLASH_API_KEY}`
+  set() {
+    console.log(this.getMonth())
+    const query = this.getMonth();
+    const url = `https://api.unsplash.com/photos/random/?query=${query}&collections=2cO3esWySUQ&orientation=landscape&client_id=${UNSPLASH_API_KEY}`
 
-    fetch(baseUnplash)
+    fetch(url)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        weatherAppElement.style.backgroundImage = `url('${data.urls.regular}')`;
+        const weatherAppElement = document.querySelector('.weather-app')
+        weatherAppElement.style.backgroundImage = `url('${data.urls.full}')`;
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }
 
-  // setBgImage(hour, month) {
-  //   const defaultTime = new Date();
-  //   if (hour === undefined) { hour = defaultTime.getHours();}
-  //   if (month === undefined) { month = defaultTime.getMonth() + 1; }
-
-  //   let timeOfDay;
-  //   let season;
-  //   let query;
-
-  //   if (hour >= 6 && hour <= 12) {
-  //     timeOfDay = 'morning'
-  //   } else if (hour > 12 && hour <= 18) {
-  //     timeOfDay = 'daylight'
-  //   } else if (hour > 18 && hour <= 23) {
-  //     timeOfDay = 'evening'
-  //   } else {
-  //     timeOfDay = 'night'
-  //   }
-
-  //   if (month >= 12 && month <= 2) {
-  //     season = 'winter'
-  //   } else if (month >= 3 && month <= 5) {
-  //     season = 'spring'
-  //   } else if (month >= 6 && month <= 8) {
-  //     season = 'summer'
-  //   } else {
-  //     season = 'autumn'
-  //   }
-    
-  //   query = `${season} ${timeOfDay} nature`;
-
-  //   const baseUnplash = `https://api.unsplash.com/photos/random/?query=${query}&orientation=landscape&client_id=F7PfvDiGf2Q40MFWmgrttVXfo-yKVLhbsitrsUGnWvg`
-
-  //   fetch(baseUnplash)
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       weatherAppElement.style.backgroundImage = `url('${data.urls.regular}')`;
-  //     })
-  // }
-}
+  update() {
+    const backgroundChangeBtn = document.querySelector('.header__bg-change-btn');
+    backgroundChangeBtn.addEventListener('click', this.set);
+  }
+};

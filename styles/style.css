@@ -41,8 +41,8 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: top center;
-  height: 100vh;
+  background-position: center center;
+  min-height: 100vh;
 }
 
 .container {
