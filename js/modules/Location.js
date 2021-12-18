@@ -16,6 +16,7 @@ export default class Location {
         const { coords } = res;
         this.displayCoods(coords);
         this.displayMap([coords.longitude, coords.latitude]);
+        this.getCityName(coords);
         return coords;
       })
       .catch((err) => {
@@ -46,5 +47,24 @@ export default class Location {
   
     const marker1 = new mapboxgl.Marker();
     marker1.setLngLat(center).addTo(map);
+  }
+
+  getCityName(coords) {
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?access_token=${MAPBOX_API_KEY}`;
+
+    fetch(url)
+      .then((res) => {
+        return res.json()
+      })
+      .then((data) => {
+        const country = data.features[0].context[3].text;
+        const city = data.features[0].context[1].text;
+
+        const countryEl = document.querySelector('.weather__country');
+        const cityEl = document.querySelector('.weather__city');
+
+        cityEl.textContent = city;
+        countryEl.textContent = country;
+      })
   }
 };
