@@ -11,7 +11,7 @@ export default class Location {
   }
 
   get() {
-    this.getLocationPromise()
+    return this.getLocationPromise()
       .then((res) => {
         const { coords } = res;
         this.displayCoods(coords);

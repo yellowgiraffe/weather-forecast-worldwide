@@ -22,7 +22,6 @@ export default class Background {
   }
 
   set() {
-    console.log(this.getMonth())
     const query = this.getMonth();
     const url = `https://api.unsplash.com/photos/random/?query=${query}&collections=2cO3esWySUQ&orientation=landscape&client_id=${UNSPLASH_API_KEY}`
 

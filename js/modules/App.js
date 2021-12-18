@@ -13,7 +13,7 @@ export default class App {
   init() {
     this.background.set();
     this.updateBackground();
-    this.weather.test();
+    this.weather.getUserLocation();
   }
 
   updateBackground() {
