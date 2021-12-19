@@ -3,8 +3,8 @@ import { UNSPLASH_API_KEY } from "../apikeys.js";
 import { get } from "../utils/localStorage.js";
 
 export default class Background {
-  constructor(date) {
-    this.date = date;
+  constructor() {
+    this.date = new Date();
   }
 
   getMonth() {

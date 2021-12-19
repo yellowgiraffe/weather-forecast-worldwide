@@ -1,7 +1,7 @@
 import { MAPBOX_API_KEY } from "../apikeys.js";
 
 export default class Location {
-  getLocationPromise() {
+  getUserLocationPromise() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         (position) => resolve(position),
@@ -11,7 +11,7 @@ export default class Location {
   }
 
   get() {
-    return this.getLocationPromise()
+    return this.getUserLocationPromise()
       .then((res) => {
         const { coords } = res;
         this.displayCoods(coords);
@@ -50,21 +50,29 @@ export default class Location {
   }
 
   getCityName(coords) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?access_token=${MAPBOX_API_KEY}`;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?language=en&access_token=${MAPBOX_API_KEY}`;
 
     fetch(url)
       .then((res) => {
-        return res.json()
+        return res.json();
       })
       .then((data) => {
-        const country = data.features[0].context[3].text;
-        const city = data.features[0].context[1].text;
-
-        const countryEl = document.querySelector('.weather__country');
-        const cityEl = document.querySelector('.weather__city');
-
-        cityEl.textContent = city;
-        countryEl.textContent = country;
+        for (let prop in data.features) {
+          console.log(data.features[prop])
+          if (data.features[prop].id.includes('place')) {
+            const city = data.features[prop].text;
+            const cityEl = document.querySelector('.weather__city');
+            cityEl.textContent = city;
+          }
+          if (data.features[prop].id.includes('country')) {
+            const country = data.features[prop].text;
+            const countryEl = document.querySelector('.weather__country');
+            countryEl.textContent = country;
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }
 };

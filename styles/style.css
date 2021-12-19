@@ -146,6 +146,13 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   color: #CFCFCF;
 }
 
+.header__search-btn {
+  width: 20px;
+  height: 20px;
+  background: url(img/search-btn.svg) no-repeat;
+  cursor: pointer;
+}
+
 .weather {
   padding-top: 3.7rem;
 }
