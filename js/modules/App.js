@@ -12,18 +12,19 @@ export default class App {
   }
   init() {
     this.background.set();
-    this.updateBackground();
     this.weather.getUserLocation();
     this.listenToClicks();
+  }
+
+  listenToClicks() {
+    this.updateBackground();
+    this.searchLocation();
+    this.weather.changeWeatherUnits();
   }
 
   updateBackground() {
     const backgroundChangeBtn = document.querySelector('.header__bg-change-btn');
     backgroundChangeBtn.addEventListener('click', this.background.set);
-  }
-
-  listenToClicks() {
-    this.searchLocation();
   }
 
   // searchAutocomplite() {

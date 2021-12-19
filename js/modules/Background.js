@@ -1,6 +1,5 @@
 // import create from '../utils/create.js';
 import { UNSPLASH_API_KEY } from "../apikeys.js";
-import { get } from "../utils/localStorage.js";
 
 export default class Background {
   constructor() {
@@ -11,19 +10,19 @@ export default class Background {
     const month = this.date.getMonth() + 1;
 
     if (month == 12 || month <= 2) {
-      return 'winter'
+      return 'HjUOZVNHXDg'
     } else if (month >= 3 && month <= 5) {
-      return 'spring'
+      return 'DMhhgSDGBg8'
     } else if (month >= 6 && month <= 8) {
-      return 'summer'
+      return '15PiWPEFqkE'
     } else {
-      return 'autumn'
+      return '7C1isvBWq1o'
     }
   }
 
   set() {
     const query = this.getMonth();
-    const url = `https://api.unsplash.com/photos/random/?query=${query}&collections=2cO3esWySUQ&orientation=landscape&client_id=${UNSPLASH_API_KEY}`
+    const url = `https://api.unsplash.com/photos/random/?collections=${query}&orientation=landscape&client_id=${UNSPLASH_API_KEY}`
 
     fetch(url)
       .then((response) => {

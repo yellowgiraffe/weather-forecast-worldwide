@@ -58,7 +58,6 @@ export default class Location {
       })
       .then((data) => {
         for (let prop in data.features) {
-          console.log(data.features[prop])
           if (data.features[prop].id.includes('place')) {
             const city = data.features[prop].text;
             const cityEl = document.querySelector('.weather__city');

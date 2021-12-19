@@ -1,26 +1,48 @@
 import Location from './Location.js';
 import { WEATHER_API_KEY } from "../apikeys.js";
-const weatherUnits = 'metric'
 
 export default class Weather {
   constructor() {
     this.location = new Location();
+    this.latitude = null;
+    this.longitude = null;
+    this.weatherUnits = null;
   }
 
   getUserLocation() {
     this.location.get()
       .then((coords) => {
-        const latitude = coords.latitude;
-        const longitude = coords.longitude;
-        this.getWeatherData(latitude, longitude);
+        this.latitude = coords.latitude;
+        this.longitude = coords.longitude;
+        this.setWeatherUnits();
+        this.getWeatherData(this.latitude, this.longitude);
       })
       .catch((err) => {
         console.log(err);
       })
   }
 
+  setWeatherUnits() {
+    const celsiusBtn = document.querySelector('.temperature-C');
+    const fahrenheitBtn = document.querySelector('.temperature-F');
+
+    if (localStorage.getItem('weatherUnits') == null) {
+    localStorage.setItem('weatherUnits', 'metric');
+    celsiusBtn.classList.add('active-temperature-btn');
+    this.weatherUnits = 'metric';
+  } else if (localStorage.getItem('weatherUnits') == 'metric') {
+    celsiusBtn.classList.add('active-temperature-btn');
+    fahrenheitBtn.classList.remove('active-temperature-btn');
+    this.weatherUnits = 'metric';
+  } else if (localStorage.getItem('weatherUnits') == 'imperial') {
+    celsiusBtn.classList.remove('active-temperature-btn');
+    fahrenheitBtn.classList.add('active-temperature-btn');
+    this.weatherUnits = 'imperial';
+  }
+  }
+
   getWeatherData(latitude, longitude) {
-    const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,alerts&appid=${WEATHER_API_KEY}&units=${weatherUnits}`;
+    const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,alerts&appid=${WEATHER_API_KEY}&units=${this.weatherUnits}`;
 
     fetch(url)
       .then((weatherData) => {
@@ -35,10 +57,48 @@ export default class Weather {
       })
   }
 
+  // toCelsius() {
+  //   const currentTemperatureEl = document.querySelector('.weather__temperature');
+  //   const fahrenheit  = currentTemperatureEl.textContent;
+  //   console.log(fahrenheit)
+  //   currentTemperatureEl.textContent = (fahrenheit - 32) / 1.8;
+  // }
+
+  // toFahrenheit() {
+  //   const currentTemperatureEl = document.querySelector('.weather__temperature');
+  //   const celsius  = currentTemperatureEl.textContent;
+  //   console.log(celsius)
+  //   currentTemperatureEl.textContent = celsius * 1.8 + 32;
+  // }
+
+  changeWeatherUnits() {
+    const celsiusBtn = document.querySelector('.temperature-C');
+    celsiusBtn.addEventListener('click', () => {
+      localStorage.setItem("weatherUnits", 'metric');
+      fahrenheitBtn.classList.remove('active-temperature-btn');
+      celsiusBtn.classList.add('active-temperature-btn');
+      this.weatherUnits = 'metric';
+      // this.toCelsius();
+      this.getWeatherData(this.latitude, this.longitude)
+    });
+
+    const fahrenheitBtn = document.querySelector('.temperature-F');
+    fahrenheitBtn.addEventListener('click', () => {
+      localStorage.setItem("weatherUnits", 'imperial');
+      celsiusBtn.classList.remove('active-temperature-btn');
+      fahrenheitBtn.classList.add('active-temperature-btn');
+      this.weatherUnits = 'imperial';
+      // this.toFahrenheit();
+      this.getWeatherData(this.latitude, this.longitude)
+    });
+
+  }
+
   displayTodayWeather(weather) {
+    const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
     const currentTemperature = weather.current.temp;
     const currentTemperatureEl = document.querySelector('.weather__temperature');
-    currentTemperatureEl.textContent = currentTemperature.toFixed(0) + '°C';
+    currentTemperatureEl.textContent = currentTemperature.toFixed(0) + unit;
 
     const weatherCode = weather.current.weather[0].icon;
     const weatherIcon = document.querySelector('.weather__icon')
@@ -51,7 +111,7 @@ export default class Weather {
 
     const feelsLike = weather.current.feels_like;
     const feelsLikeEl = document.querySelector('.feels-like');
-    feelsLikeEl.textContent = feelsLike.toFixed(0) + '°C';
+    feelsLikeEl.textContent = feelsLike.toFixed(0) + unit;
 
     const wind = weather.current.wind_speed;
     const windEl = document.querySelector('.wind');
@@ -70,7 +130,7 @@ export default class Weather {
   }
 
   displayForecast(weather) {
-    const weatherUnit = '°C';
+    const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
     const timezone = weather.timezone;
 
     const forecastDay1Date = new Date(weather.daily[1].dt * 1000);
@@ -79,7 +139,7 @@ export default class Weather {
 
     const forecastDay1Temp = weather.daily[1].temp.day;
     const forecastDay1TempEl = document.querySelector('.weather-day1__temp');
-    forecastDay1TempEl.textContent = forecastDay1Temp.toFixed(0) + weatherUnit;
+    forecastDay1TempEl.textContent = forecastDay1Temp.toFixed(0) + unit;
     
     const forecastDay1WeatherCode = weather.daily[1].weather[0].icon;
     const forecastDay1IconEl = document.querySelector('.weather-day1__icon');
@@ -91,7 +151,7 @@ export default class Weather {
 
     const forecastDay2Temp = weather.daily[2].temp.day;
     const forecastDay2TempEl = document.querySelector('.weather-day2__temp');
-    forecastDay2TempEl.textContent = forecastDay2Temp.toFixed(0) + weatherUnit;
+    forecastDay2TempEl.textContent = forecastDay2Temp.toFixed(0) + unit;
 
     const forecastDay2WeatherCode = weather.daily[2].weather[0].icon;
     const forecastDay2IconEl = document.querySelector('.weather-day2__icon');
@@ -103,7 +163,7 @@ export default class Weather {
 
     const forecastDay3Temp = weather.daily[3].temp.day;
     const forecastDay3TempEl = document.querySelector('.weather-day3__temp');
-    forecastDay3TempEl.textContent = forecastDay3Temp.toFixed(0) + weatherUnit;
+    forecastDay3TempEl.textContent = forecastDay3Temp.toFixed(0) + unit;
 
     const forecastDay3WeatherCode = weather.daily[3].weather[0].icon;
     const forecastDay3IconEl = document.querySelector('.weather-day3__icon');
