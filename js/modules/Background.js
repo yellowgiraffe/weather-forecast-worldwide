@@ -4,25 +4,26 @@ import { UNSPLASH_API_KEY } from "../apikeys.js";
 export default class Background {
   constructor() {
     this.date = new Date();
+    this.query = null;
   }
 
   getMonth() {
     const month = this.date.getMonth() + 1;
 
     if (month == 12 || month <= 2) {
-      return 'HjUOZVNHXDg'
+      this.query = 'HjUOZVNHXDg';
     } else if (month >= 3 && month <= 5) {
-      return 'DMhhgSDGBg8'
+      this.query = 'DMhhgSDGBg8';
     } else if (month >= 6 && month <= 8) {
-      return '15PiWPEFqkE'
+      this.query = '15PiWPEFqkE'
     } else {
-      return '7C1isvBWq1o'
+      this.query = '7C1isvBWq1o';
     }
   }
 
   set() {
-    const query = this.getMonth();
-    const url = `https://api.unsplash.com/photos/random/?collections=${query}&orientation=landscape&client_id=${UNSPLASH_API_KEY}`
+    this.getMonth();
+    const url = `https://api.unsplash.com/photos/random/?collections=${this.query}&orientation=landscape&client_id=${UNSPLASH_API_KEY}`
 
     fetch(url)
       .then((response) => {
@@ -39,6 +40,8 @@ export default class Background {
 
   update() {
     const backgroundChangeBtn = document.querySelector('.header__bg-change-btn');
-    backgroundChangeBtn.addEventListener('click', this.set);
+    backgroundChangeBtn.addEventListener('click', () => {
+      this.set()
+    });
   }
 };

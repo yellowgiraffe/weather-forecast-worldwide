@@ -17,14 +17,9 @@ export default class App {
   }
 
   listenToClicks() {
-    this.updateBackground();
+    this.background.update();
     this.searchLocation();
     this.weather.changeWeatherUnits();
-  }
-
-  updateBackground() {
-    const backgroundChangeBtn = document.querySelector('.header__bg-change-btn');
-    backgroundChangeBtn.addEventListener('click', this.background.set);
   }
 
   // searchAutocomplite() {

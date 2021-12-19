@@ -57,20 +57,6 @@ export default class Weather {
       })
   }
 
-  // toCelsius() {
-  //   const currentTemperatureEl = document.querySelector('.weather__temperature');
-  //   const fahrenheit  = currentTemperatureEl.textContent;
-  //   console.log(fahrenheit)
-  //   currentTemperatureEl.textContent = (fahrenheit - 32) / 1.8;
-  // }
-
-  // toFahrenheit() {
-  //   const currentTemperatureEl = document.querySelector('.weather__temperature');
-  //   const celsius  = currentTemperatureEl.textContent;
-  //   console.log(celsius)
-  //   currentTemperatureEl.textContent = celsius * 1.8 + 32;
-  // }
-
   changeWeatherUnits() {
     const celsiusBtn = document.querySelector('.temperature-C');
     celsiusBtn.addEventListener('click', () => {
@@ -78,7 +64,6 @@ export default class Weather {
       fahrenheitBtn.classList.remove('active-temperature-btn');
       celsiusBtn.classList.add('active-temperature-btn');
       this.weatherUnits = 'metric';
-      // this.toCelsius();
       this.getWeatherData(this.latitude, this.longitude)
     });
 
@@ -88,7 +73,6 @@ export default class Weather {
       celsiusBtn.classList.remove('active-temperature-btn');
       fahrenheitBtn.classList.add('active-temperature-btn');
       this.weatherUnits = 'imperial';
-      // this.toFahrenheit();
       this.getWeatherData(this.latitude, this.longitude)
     });
 
