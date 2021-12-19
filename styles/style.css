@@ -84,32 +84,6 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   transform: scale(1.1);
 }
 
-.header__select-language {
-  background: none;
-  color: #fff;
-  margin-right: 4.5rem;
-  font-size: 1.2rem;
-  font-family: 'Manrope', Arial, Helvetica, sans-serif;
-  transition: .3s;
-}
-
-.header__select-language:focus {
-  background-color: #fff;
-  color: #010101;
-}
-
-
-.header__select-language > option {
-  font-family: 'Manrope';
-  background-color: #fff;
-  color: #010101;
-  border-radius: 50%;
-}
-
-.header__select-language > option:focus {
-  color: #fff;
-  background-color: #010101;
-}
 
 .header__temperature-button {
   background: none;

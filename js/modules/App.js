@@ -1,8 +1,7 @@
-import * as storage from '../utils/localStorage.js';
 import Background from './Background.js';
 import Weather from './Weather.js';
 import Location from './Location.js';
-import { MAPBOX_API_KEY, WEATHER_API_KEY } from '../apikeys.js';
+import { MAPBOX_API_KEY } from '../apikeys.js';
 
 export default class App {
   constructor() {
@@ -22,28 +21,7 @@ export default class App {
     this.weather.changeWeatherUnits();
   }
 
-  // searchAutocomplite() {
-  //   mapboxgl.accessToken = MAPBOX_API_KEY;
-  //   const geocoder = new MapboxGeocoder({
-  //     accessToken: mapboxgl.accessToken,
-  //     types: 'country,region,place,postcode,locality,neighborhood'
-  //   });
-    
-  //   geocoder.addTo('#geocoder');
-    
-  //   const results = document.querySelector('header__search-result');
-    
-  //   geocoder.on('result', (e) => {
-  //   results.innerText = JSON.stringify(e.result, null, 2);
-  //   });
-
-  //   geocoder.on('clear', () => {
-  //   results.innerText = '';
-  //   });
-  // }
-
   searchLocation() {
-    // this.searchAutocomplite();
     const searchBtn = document.querySelector('.header__search-btn');
     searchBtn.addEventListener('click', (event) => {
       event.preventDefault();
@@ -57,7 +35,6 @@ export default class App {
           return data.json();
         })
         .then((dataJson) => {
-          // console.log(dataJson.features)
           const coords = {
             latitude: dataJson.features[0].center[1],
             longitude: dataJson.features[0].center[0]

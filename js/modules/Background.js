@@ -1,4 +1,3 @@
-// import create from '../utils/create.js';
 import { UNSPLASH_API_KEY } from "../apikeys.js";
 
 export default class Background {
