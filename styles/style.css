@@ -251,7 +251,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   margin-bottom: 4rem;
 }
 
-@media screen and (max-width: 1164px) {
+@media screen and (max-width: 1226px) {
   .main-content {
     flex-direction: column;
     align-items: center;
@@ -277,13 +277,17 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   }
 }
 
-@media screen and (max-width: 790px) {
+@media screen and (max-width: 837px) {
   .header__search-bar {
     width: 15rem;
   }
 
   .header__search-input {
     width: 13rem;
+  }
+
+  .weather__temperature {
+    font-size: 7rem;
   }
 }
 
@@ -315,6 +319,10 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   .weather {
     width: 100%;
   }
+
+  .weather__temperature {
+    font-size: 6rem;
+  }
 }
 
 @media screen and (max-width: 490px) {
@@ -325,9 +333,13 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   html,body {
     font-size: 14px;
   }
+
+  .header {
+    padding-bottom: 0;
+  }
 }
 
-@media screen and (max-width: 410px) {
+@media screen and (max-width: 430px) {
   .weather__location-info {
     grid-template-columns: .3fr .3fr .2fr .2fr;
     row-gap: .5rem;
@@ -348,12 +360,12 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
     grid-column-start: 2;
     grid-column-end: 5;
     justify-self: start;
-    margin-bottom: 1.5rem;
+    margin-bottom: .5rem;
   }
 
   .weather__current-date {
-    grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 4;
   }
 
   .weather__current-time {
@@ -361,7 +373,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   }
 
   .weather__temperature {
-    font-size: 7rem;
+    font-size: 5rem;
     margin-right: 1.5rem;
   }
 
@@ -372,15 +384,11 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 
 @media screen and (max-width: 370px) {
   .weather__temperature {
-    font-size: 6.5rem;
+    font-size: 4.5rem;
   }
 }
 
 @media screen and (max-width: 350px) {
-  .weather__temperature {
-    font-size: 5.5rem;
-  }
-
   .weather-details-item:first-child {
     font-size: 1.1rem;
   }
