@@ -28,15 +28,15 @@ export default class Weather {
     localStorage.setItem('weatherUnits', 'metric');
     celsiusBtn.classList.add('active-temperature-btn');
     this.weatherUnits = 'metric';
-  } else if (localStorage.getItem('weatherUnits') == 'metric') {
+    } else if (localStorage.getItem('weatherUnits') == 'metric') {
     celsiusBtn.classList.add('active-temperature-btn');
     fahrenheitBtn.classList.remove('active-temperature-btn');
     this.weatherUnits = 'metric';
-  } else if (localStorage.getItem('weatherUnits') == 'imperial') {
+    } else if (localStorage.getItem('weatherUnits') == 'imperial') {
     celsiusBtn.classList.remove('active-temperature-btn');
     fahrenheitBtn.classList.add('active-temperature-btn');
     this.weatherUnits = 'imperial';
-  }
+    }
   }
 
   getWeatherData(latitude, longitude) {
@@ -55,18 +55,29 @@ export default class Weather {
       })
   }
 
-  // toCelsius() {
-  //   const currentTemperatureEl = document.querySelector('.weather__temperature');
-  // }
-
   changeWeatherUnits() {
+    const currentTemperatureEl = document.querySelector('.weather__temperature');
+    const feelsLikeEl = document.querySelector('.feels-like');
+    const forecastDay1TempEl = document.querySelector('.weather-day1__temp');
+    const forecastDay2TempEl = document.querySelector('.weather-day2__temp');
+    const forecastDay3TempEl = document.querySelector('.weather-day3__temp');
+    const temperatureElements = [
+      currentTemperatureEl, 
+      feelsLikeEl,
+      forecastDay1TempEl,
+      forecastDay2TempEl,
+      forecastDay3TempEl
+    ];
+
     const fahrenheitBtn = document.querySelector('.temperature-F');
     fahrenheitBtn.addEventListener('click', () => {
       localStorage.setItem("weatherUnits", 'imperial');
       celsiusBtn.classList.remove('active-temperature-btn');
       fahrenheitBtn.classList.add('active-temperature-btn');
       this.weatherUnits = 'imperial';
-      // this.toFahrenheit();
+
+      const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
+      temperatureElements.forEach((el) => el.textContent = (el.textContent.substring(0, el.textContent.length - 2) * 1.8 + 32).toFixed(0) + unit);
     });
 
     const celsiusBtn = document.querySelector('.temperature-C');
@@ -75,7 +86,9 @@ export default class Weather {
       fahrenheitBtn.classList.remove('active-temperature-btn');
       celsiusBtn.classList.add('active-temperature-btn');
       this.weatherUnits = 'metric';
-      // this.toCelsius();
+
+      const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
+      temperatureElements.forEach((el) => el.textContent = ((el.textContent.substring(0, el.textContent.length - 2) - 32) / 1.8).toFixed(0) + unit);
     });
   }
 
