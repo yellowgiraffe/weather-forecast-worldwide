@@ -1,0 +1,25 @@
+{
+  "name": "weather-forecast-worldwide",
+  "description": "JavaScript Weather App",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4"
+  },
+  "scripts": {
+    "lint": "eslint ./",
+    "lint:fix": "eslint --fix ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowgiraffe/weather-forecast-worldwide.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yellowgiraffe/weather-forecast-worldwide/issues"
+  },
+  "homepage": "https://github.com/yellowgiraffe/weather-forecast-worldwide#readme"
+}

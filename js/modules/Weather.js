@@ -1,5 +1,5 @@
 import Location from './Location.js';
-import { WEATHER_API_KEY } from "../apikeys.js";
+import { WEATHER_API_KEY } from '../apikeys.js';
 
 export default class Weather {
   constructor() {
@@ -10,14 +10,14 @@ export default class Weather {
   getUserLocation() {
     this.location.get()
       .then((coords) => {
-        const latitude = coords.latitude;
-        const longitude = coords.longitude;
+        const { latitude } = coords;
+        const { longitude } = coords;
         this.setWeatherUnits();
         this.getWeatherData(latitude, longitude);
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   setWeatherUnits() {
@@ -25,17 +25,17 @@ export default class Weather {
     const fahrenheitBtn = document.querySelector('.temperature-F');
 
     if (localStorage.getItem('weatherUnits') == null) {
-    localStorage.setItem('weatherUnits', 'metric');
-    celsiusBtn.classList.add('active-temperature-btn');
-    this.weatherUnits = 'metric';
-    } else if (localStorage.getItem('weatherUnits') == 'metric') {
-    celsiusBtn.classList.add('active-temperature-btn');
-    fahrenheitBtn.classList.remove('active-temperature-btn');
-    this.weatherUnits = 'metric';
-    } else if (localStorage.getItem('weatherUnits') == 'imperial') {
-    celsiusBtn.classList.remove('active-temperature-btn');
-    fahrenheitBtn.classList.add('active-temperature-btn');
-    this.weatherUnits = 'imperial';
+      localStorage.setItem('weatherUnits', 'metric');
+      celsiusBtn.classList.add('active-temperature-btn');
+      this.weatherUnits = 'metric';
+    } else if (localStorage.getItem('weatherUnits') === 'metric') {
+      celsiusBtn.classList.add('active-temperature-btn');
+      fahrenheitBtn.classList.remove('active-temperature-btn');
+      this.weatherUnits = 'metric';
+    } else if (localStorage.getItem('weatherUnits') === 'imperial') {
+      celsiusBtn.classList.remove('active-temperature-btn');
+      fahrenheitBtn.classList.add('active-temperature-btn');
+      this.weatherUnits = 'imperial';
     }
   }
 
@@ -43,16 +43,14 @@ export default class Weather {
     const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,alerts&appid=${WEATHER_API_KEY}&units=${this.weatherUnits}`;
 
     fetch(url)
-      .then((weatherData) => {
-        return weatherData.json();
-      })
+      .then((weatherData) => weatherData.json())
       .then((weatherJson) => {
         this.displayTodayWeather(weatherJson);
         this.displayForecast(weatherJson);
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   changeWeatherUnits() {
@@ -62,48 +60,49 @@ export default class Weather {
     const forecastDay2TempEl = document.querySelector('.weather-day2__temp');
     const forecastDay3TempEl = document.querySelector('.weather-day3__temp');
     const temperatureElements = [
-      currentTemperatureEl, 
+      currentTemperatureEl,
       feelsLikeEl,
       forecastDay1TempEl,
       forecastDay2TempEl,
-      forecastDay3TempEl
+      forecastDay3TempEl,
     ];
 
     const fahrenheitBtn = document.querySelector('.temperature-F');
+    const celsiusBtn = document.querySelector('.temperature-C');
+
     fahrenheitBtn.addEventListener('click', () => {
-      localStorage.setItem("weatherUnits", 'imperial');
+      localStorage.setItem('weatherUnits', 'imperial');
       celsiusBtn.classList.remove('active-temperature-btn');
       fahrenheitBtn.classList.add('active-temperature-btn');
       this.weatherUnits = 'imperial';
 
-      const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
+      const unit = this.weatherUnits === 'metric' ? '°C' : '°F';
       temperatureElements.forEach((el) => el.textContent = (el.textContent.substring(0, el.textContent.length - 2) * 1.8 + 32).toFixed(0) + unit);
     });
 
-    const celsiusBtn = document.querySelector('.temperature-C');
     celsiusBtn.addEventListener('click', () => {
-      localStorage.setItem("weatherUnits", 'metric');
+      localStorage.setItem('weatherUnits', 'metric');
       fahrenheitBtn.classList.remove('active-temperature-btn');
       celsiusBtn.classList.add('active-temperature-btn');
       this.weatherUnits = 'metric';
 
-      const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
+      const unit = this.weatherUnits === 'metric' ? '°C' : '°F';
       temperatureElements.forEach((el) => el.textContent = ((el.textContent.substring(0, el.textContent.length - 2) - 32) / 1.8).toFixed(0) + unit);
     });
   }
 
   displayTodayWeather(weather) {
-    const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
+    const unit = this.weatherUnits === 'metric' ? '°C' : '°F';
     const currentTemperature = weather.current.temp;
     const currentTemperatureEl = document.querySelector('.weather__temperature');
     currentTemperatureEl.textContent = currentTemperature.toFixed(0) + unit;
 
     const weatherCode = weather.current.weather[0].icon;
-    const weatherIcon = document.querySelector('.weather__icon')
+    const weatherIcon = document.querySelector('.weather__icon');
     const iconUrl = `styles/img/weather-icons/${weatherCode}.svg`;
     weatherIcon.src = iconUrl;
 
-    const weatherDesc = weather.current.weather[0].description; 
+    const weatherDesc = weather.current.weather[0].description;
     const currentWeatherEl = document.querySelector('.current-weather');
     currentWeatherEl.textContent = weatherDesc.charAt(0).toUpperCase() + weatherDesc.slice(1);
 
@@ -113,39 +112,49 @@ export default class Weather {
 
     const wind = weather.current.wind_speed;
     const windEl = document.querySelector('.wind');
-    windEl.textContent = wind.toFixed(1) + ' m/s';
+    windEl.textContent = `${wind.toFixed(1)} m/s`;
 
-    const humidity = weather.current.humidity;
+    const { humidity } = weather.current;
     const humidityEl = document.querySelector('.humidity');
-    humidityEl.textContent = humidity + ' %';
+    humidityEl.textContent = `${humidity} %`;
 
-    const timezone = weather.timezone;
+    const { timezone } = weather;
     const time = new Date(weather.current.dt * 1000);
     const dateEl = document.querySelector('.weather__current-date');
     const timeEl = document.querySelector('.weather__current-time');
-    dateEl.textContent = time.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: `${timezone}`});
-    timeEl.textContent = time.toLocaleTimeString('en-GB', {hour: '2-digit', minute:'2-digit', timeZone: `${timezone}`});
+    dateEl.textContent = time.toLocaleDateString('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      timeZone: `${timezone}`,
+    });
+
+    timeEl.textContent = time.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: `${timezone}`,
+    });
   }
 
   displayForecast(weather) {
-    const unit = this.weatherUnits == 'metric' ? '°C' : '°F';
-    const timezone = weather.timezone;
+    const unit = this.weatherUnits === 'metric' ? '°C' : '°F';
+    const { timezone } = weather;
 
     const forecastDay1Date = new Date(weather.daily[1].dt * 1000);
     const forecastDay1El = document.querySelector('.weather-day1');
-    forecastDay1El.textContent = forecastDay1Date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: `${timezone}`});
+    forecastDay1El.textContent = forecastDay1Date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: `${timezone}` });
 
     const forecastDay1Temp = weather.daily[1].temp.day;
     const forecastDay1TempEl = document.querySelector('.weather-day1__temp');
     forecastDay1TempEl.textContent = forecastDay1Temp.toFixed(0) + unit;
-    
+
     const forecastDay1WeatherCode = weather.daily[1].weather[0].icon;
     const forecastDay1IconEl = document.querySelector('.weather-day1__icon');
     forecastDay1IconEl.src = `styles/img/weather-icons/${forecastDay1WeatherCode}.svg`;
 
     const forecastDay2Date = new Date(weather.daily[2].dt * 1000);
     const forecastDay2El = document.querySelector('.weather-day2');
-    forecastDay2El.textContent = forecastDay2Date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: `${timezone}`});
+    forecastDay2El.textContent = forecastDay2Date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: `${timezone}` });
 
     const forecastDay2Temp = weather.daily[2].temp.day;
     const forecastDay2TempEl = document.querySelector('.weather-day2__temp');
@@ -157,7 +166,7 @@ export default class Weather {
 
     const forecastDay3Date = new Date(weather.daily[3].dt * 1000);
     const forecastDay3El = document.querySelector('.weather-day3');
-    forecastDay3El.textContent = forecastDay3Date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: `${timezone}`});
+    forecastDay3El.textContent = forecastDay3Date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: `${timezone}` });
 
     const forecastDay3Temp = weather.daily[3].temp.day;
     const forecastDay3TempEl = document.querySelector('.weather-day3__temp');

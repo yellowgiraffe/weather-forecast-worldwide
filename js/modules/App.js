@@ -9,6 +9,7 @@ export default class App {
     this.weather = new Weather();
     this.location = new Location();
   }
+
   init() {
     this.background.set();
     this.weather.getUserLocation();
@@ -26,19 +27,17 @@ export default class App {
     searchBtn.addEventListener('click', (event) => {
       event.preventDefault();
       const searchInput = document.querySelector('.header__search-input');
-      let city = searchInput.value;
+      const city = searchInput.value;
 
       const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${city}.json?access_token=${MAPBOX_API_KEY}&autocomplete=true&fuzzyMatch=false`;
 
       fetch(url)
-        .then((data) => {
-          return data.json();
-        })
+        .then((data) => data.json())
         .then((dataJson) => {
           const coords = {
             latitude: dataJson.features[0].center[1],
-            longitude: dataJson.features[0].center[0]
-          }
+            longitude: dataJson.features[0].center[0],
+          };
 
           this.location.displayCoods(coords);
           this.location.displayMap([coords.longitude, coords.latitude]);
@@ -46,10 +45,10 @@ export default class App {
 
           this.weather.getWeatherData(coords.latitude, coords.longitude);
           searchInput.value = '';
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    })
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   }
 }

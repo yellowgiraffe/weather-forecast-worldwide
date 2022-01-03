@@ -1,11 +1,11 @@
-import { MAPBOX_API_KEY } from "../apikeys.js";
+import { MAPBOX_API_KEY } from '../apikeys.js';
 
 export default class Location {
   getUserLocationPromise() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         (position) => resolve(position),
-        (error) => reject(error)
+        (error) => reject(error),
       );
     });
   }
@@ -19,11 +19,11 @@ export default class Location {
         this.getCityName(coords);
         return coords;
       })
-      .catch((err) => {
+      .catch(() => {
         const coords = {
           latitude: 52.237049,
           longitude: 21.017532,
-        }
+        };
         this.displayCoods(coords);
         this.displayMap([coords.longitude, coords.latitude]);
         this.getCityName(coords);
@@ -36,8 +36,8 @@ export default class Location {
     const latitudeEl = document.querySelector('.side-bar__map-latitude');
     const longitudeEl = document.querySelector('.side-bar__map-longitude');
 
-    latitudeEl.textContent = 'Latitude: ' + position.latitude.toFixed(4);
-    longitudeEl.textContent = 'Longitude: ' + position.longitude.toFixed(4);
+    latitudeEl.textContent = `Latitude: ${position.latitude.toFixed(4)}`;
+    longitudeEl.textContent = `Longitude: ${position.longitude.toFixed(4)}`;
   }
 
   displayMap(center) {
@@ -45,13 +45,13 @@ export default class Location {
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: center,
+      center,
       zoom: 9,
-      });
-  
-    const nav = new mapboxgl.NavigationControl()
+    });
+
+    const nav = new mapboxgl.NavigationControl();
     map.addControl(nav);
-  
+
     const marker1 = new mapboxgl.Marker();
     marker1.setLngLat(center).addTo(map);
   }
@@ -60,25 +60,23 @@ export default class Location {
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?language=en&access_token=${MAPBOX_API_KEY}`;
 
     fetch(url)
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
-        for (let prop in data.features) {
-          if (data.features[prop].id.includes('place')) {
-            const city = data.features[prop].text;
+        Object.keys(data.features).forEach((el) => {
+          if (data.features[el].id.includes('place')) {
+            const city = data.features[el].text;
             const cityEl = document.querySelector('.weather__city');
             cityEl.textContent = city;
           }
-          if (data.features[prop].id.includes('country')) {
-            const country = data.features[prop].text;
+          if (data.features[el].id.includes('country')) {
+            const country = data.features[el].text;
             const countryEl = document.querySelector('.weather__country');
             countryEl.textContent = country;
           }
-        }
+        });
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
-};
+}
