@@ -43,6 +43,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
   background-repeat: no-repeat;
   background-position: center center;
   min-height: 100vh;
+  text-shadow: 1px 1px 3px rgb(51, 51, 51, .4);
 }
 
 .container {
@@ -87,7 +88,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 
 .header__temperature-button {
   background: none;
-  color: #CFCFCF;
+  color: #e0e0e0;
   font-size: 1.2rem;
   transition: .3s;
 }
@@ -106,7 +107,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 
 .header__search-bar {
   width: 20rem;
-  border-bottom: 1px solid #ECECEC;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .header__search-input {
@@ -117,7 +118,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 }
 
 .header__search-input::placeholder {
-  color: #CFCFCF;
+  color: #e0e0e0;
 }
 
 .header__search-btn {

@@ -4,18 +4,16 @@ import { WEATHER_API_KEY } from "../apikeys.js";
 export default class Weather {
   constructor() {
     this.location = new Location();
-    this.latitude = null;
-    this.longitude = null;
     this.weatherUnits = null;
   }
 
   getUserLocation() {
     this.location.get()
       .then((coords) => {
-        this.latitude = coords.latitude;
-        this.longitude = coords.longitude;
+        const latitude = coords.latitude;
+        const longitude = coords.longitude;
         this.setWeatherUnits();
-        this.getWeatherData(this.latitude, this.longitude);
+        this.getWeatherData(latitude, longitude);
       })
       .catch((err) => {
         console.log(err);
@@ -57,25 +55,28 @@ export default class Weather {
       })
   }
 
-  changeWeatherUnits() {
-    const celsiusBtn = document.querySelector('.temperature-C');
-    celsiusBtn.addEventListener('click', () => {
-      localStorage.setItem("weatherUnits", 'metric');
-      fahrenheitBtn.classList.remove('active-temperature-btn');
-      celsiusBtn.classList.add('active-temperature-btn');
-      this.weatherUnits = 'metric';
-      this.getWeatherData(this.latitude, this.longitude)
-    });
+  // toCelsius() {
+  //   const currentTemperatureEl = document.querySelector('.weather__temperature');
+  // }
 
+  changeWeatherUnits() {
     const fahrenheitBtn = document.querySelector('.temperature-F');
     fahrenheitBtn.addEventListener('click', () => {
       localStorage.setItem("weatherUnits", 'imperial');
       celsiusBtn.classList.remove('active-temperature-btn');
       fahrenheitBtn.classList.add('active-temperature-btn');
       this.weatherUnits = 'imperial';
-      this.getWeatherData(this.latitude, this.longitude)
+      // this.toFahrenheit();
     });
 
+    const celsiusBtn = document.querySelector('.temperature-C');
+    celsiusBtn.addEventListener('click', () => {
+      localStorage.setItem("weatherUnits", 'metric');
+      fahrenheitBtn.classList.remove('active-temperature-btn');
+      celsiusBtn.classList.add('active-temperature-btn');
+      this.weatherUnits = 'metric';
+      // this.toCelsius();
+    });
   }
 
   displayTodayWeather(weather) {

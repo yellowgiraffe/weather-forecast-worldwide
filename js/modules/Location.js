@@ -20,8 +20,15 @@ export default class Location {
         return coords;
       })
       .catch((err) => {
-        console.log(err)
-        alert('No access to location')
+        const coords = {
+          latitude: 52.237049,
+          longitude: 21.017532,
+        }
+        this.displayCoods(coords);
+        this.displayMap([coords.longitude, coords.latitude]);
+        this.getCityName(coords);
+        alert('Access to your location is denied. Your default city is Warsaw');
+        return coords;
       });
   }
 
