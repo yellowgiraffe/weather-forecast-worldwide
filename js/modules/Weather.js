@@ -23,7 +23,6 @@ export default class Weather {
   setWeatherUnits() {
     const celsiusBtn = document.querySelector('.temperature-C');
     const fahrenheitBtn = document.querySelector('.temperature-F');
-
     if (localStorage.getItem('weatherUnits') == null) {
       localStorage.setItem('weatherUnits', 'metric');
       celsiusBtn.classList.add('active-temperature-btn');
@@ -59,6 +58,8 @@ export default class Weather {
     const forecastDay1TempEl = document.querySelector('.weather-day1__temp');
     const forecastDay2TempEl = document.querySelector('.weather-day2__temp');
     const forecastDay3TempEl = document.querySelector('.weather-day3__temp');
+    const fahrenheitBtn = document.querySelector('.temperature-F');
+    const celsiusBtn = document.querySelector('.temperature-C');
     const temperatureElements = [
       currentTemperatureEl,
       feelsLikeEl,
@@ -67,27 +68,36 @@ export default class Weather {
       forecastDay3TempEl,
     ];
 
-    const fahrenheitBtn = document.querySelector('.temperature-F');
-    const celsiusBtn = document.querySelector('.temperature-C');
+    celsiusBtn.addEventListener('click', () => {
+      localStorage.setItem('weatherUnits', 'metric');
+      fahrenheitBtn.classList.remove('active-temperature-btn');
+      celsiusBtn.classList.add('active-temperature-btn');
+
+      if (this.weatherUnits === 'imperial') {
+        for (let i = 0; i < temperatureElements.length; i += 1) {
+          const temperature = temperatureElements[i].textContent;
+          const unit = '°C';
+          temperatureElements[i].textContent = ((
+            temperature.substring(0, temperature.length - 2) - 32) / 1.8).toFixed(0) + unit;
+        }
+      }
+      this.weatherUnits = 'metric';
+    });
 
     fahrenheitBtn.addEventListener('click', () => {
       localStorage.setItem('weatherUnits', 'imperial');
       celsiusBtn.classList.remove('active-temperature-btn');
       fahrenheitBtn.classList.add('active-temperature-btn');
+
+      if (this.weatherUnits === 'metric') {
+        for (let i = 0; i < temperatureElements.length; i += 1) {
+          const temperature = temperatureElements[i].textContent;
+          const unit = '°F';
+          temperatureElements[i].textContent = ((
+            temperature.substring(0, temperature.length - 2) * 1.8 + 32).toFixed(0) + unit);
+        }
+      }
       this.weatherUnits = 'imperial';
-
-      const unit = this.weatherUnits === 'metric' ? '°C' : '°F';
-      temperatureElements.forEach((el) => el.textContent = (el.textContent.substring(0, el.textContent.length - 2) * 1.8 + 32).toFixed(0) + unit);
-    });
-
-    celsiusBtn.addEventListener('click', () => {
-      localStorage.setItem('weatherUnits', 'metric');
-      fahrenheitBtn.classList.remove('active-temperature-btn');
-      celsiusBtn.classList.add('active-temperature-btn');
-      this.weatherUnits = 'metric';
-
-      const unit = this.weatherUnits === 'metric' ? '°C' : '°F';
-      temperatureElements.forEach((el) => el.textContent = ((el.textContent.substring(0, el.textContent.length - 2) - 32) / 1.8).toFixed(0) + unit);
     });
   }
 
